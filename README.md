@@ -79,8 +79,8 @@ ${MODEL_SAVE_DIR}
 **The average results (%) for drowsiness classification:**
 | Model                      | Accuracy | F1-score | Precision | Recall | AUROC | 
 | -------------------------- | -------- | -------- | --------- | ------ | ----- |  
-| Baseline                   |    |     |     |     |      | 
-| Baseline + normalization (ours)   |    |     |     |     |      | 
+| Baseline                   |  72.93  |  69.09   |  72.28   |  72.97   |  72.74    | 
+| Baseline + domain-specific normalization (ours)   |  73.27  |  69.63  |  71.98   |  74.17   |  74.02  | 
 
 
 ## Citation
