@@ -5,7 +5,7 @@ import os
 """ Experiment Setting """ 
 # ARGUMENT
 parser = argparse.ArgumentParser(description='Calibration-free driver drowsiness classification')
-parser.add_argument('--data_root', default='/DATASET_DIR/', help="name of the data folder") # DATASET_DIR/
+parser.add_argument('--data_root', default='./DATASET_DIR/B', help="name of the data folder") # DATASET_DIR/
 parser.add_argument('--run_code_folder', default='')
 parser.add_argument('--save_root', default='./MODEL_SAVE_DIR/', help="where to save the models and tensorboard records") # MODEL_SAVE_DIR
 parser.add_argument('--result_dir', default="", help="save folder name") 
@@ -26,7 +26,6 @@ parser.add_argument('--num_domain', default=0, help='# bn')
 parser.add_argument('--inferbn', default='sbn', help='sbn, abn')
 
 parser.add_argument('--loss', default="CELoss", help='type of loss')
-parser.add_argument('--f_res', default=False, help='where to apply the residual identification')
 
 parser.add_argument('--optimizer', default="Adam", help='optimizer')
 parser.add_argument('--lr', type=float, default=0, metavar='LR', help='learning rate (default: 0.01)') 
@@ -38,12 +37,10 @@ parser.add_argument('--valid_batch_size', type=int, default=1, metavar='N', help
 parser.add_argument('--test_batch_size', type=int, default=1, metavar='N', help='input batch size for testing (default: 1)')
 parser.add_argument('--num_workers', type=int, default=0, metavar='N', help='number worker') 
 
-parser.add_argument('--subject_group', type=int, default=3, metavar='N', help='subject_group for parallel running') 
 parser.add_argument('--steps', type=int, default=0, help='Number of steps') 
 parser.add_argument('--checkpoint_freq', type=int, default=50, help='Checkpoint every N steps')
 parser.add_argument('--seed', type=int, default=2020, help='seed') 
 
-parser.add_argument('--dataset_name', default='B', help='Dataset name: B')
 parser.add_argument('--model_name', default='', help='trained model name')
 parser.add_argument('--mode', default='train', help='train, infer')
 

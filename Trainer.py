@@ -108,10 +108,8 @@ class Trainer():
         data = torch.cat([x for x,_,_ in minibatches])
         target = torch.cat([y for _,y,_ in minibatches])
         
-        if self.args['dataset_name']=='B':
-            domain = torch.cat([z-1 for _,_,z in minibatches])
-        else:
-            domain = torch.cat([z for _,_,z in minibatches])
+        
+        domain = torch.cat([z-1 for _,_,z in minibatches])
         
         # one hot coding
         onehot_target = to_one_hot(target, self.args['n_classes']).to(self.args['device'])

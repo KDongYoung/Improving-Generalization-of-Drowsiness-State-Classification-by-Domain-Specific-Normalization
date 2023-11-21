@@ -21,7 +21,7 @@ from utils.util import Conv1d, TwoInputSequential
 
 class BasicBlock(nn.Module):
     expansion = 1
-    def __init__(self, inplanes, planes, kernel_size, f_res=False, stride=1, 
+    def __init__(self, inplanes, planes, kernel_size, stride=1, 
                 downsample=None, norm_layer=None, num_domain=None, track_running=True, batch_size=None):
         super(BasicBlock, self).__init__()
         if norm_layer is None:
@@ -43,7 +43,6 @@ class BasicBlock(nn.Module):
         self.downsample = downsample
         self.stride = stride
         
-        self.f_res=f_res
         
     def forward(self, x, domain_label=None):
         
@@ -86,7 +85,6 @@ class reResnet(nn.Module):
         self.batch_size=args['batch_size']
         self.track_running= args['track_running']
         self.layer_len=len(layers)
-        self.f_res=args["f_res"]
         self.norm_type=args["norm_type"]
         
         num_classes = args['n_classes']
@@ -110,7 +108,7 @@ class reResnet(nn.Module):
         elif self.norm_type=="bn":
             self._norm_layer = nn.BatchNorm1d
                 
-        if self.norm_type=="bn" or self.norm_type=="in" or self.norm_type=="ibn":
+        if self.norm_type=="bn":
             self.Sequential=nn.Sequential
             self.Conv=nn.Conv1d
         else:
@@ -140,7 +138,7 @@ class reResnet(nn.Module):
             self.dilation *= stride
             stride = 1
         if stride != 1 or self.inplanes != planes * block.expansion:
-            if self.norm_type=="bn" or self.norm_type=="in" or self.norm_type=="ibn":
+            if self.norm_type=="bn":
                 downsample = self.Sequential(
                     self.Conv(self.inplanes, planes * block.expansion, kernel_size=1, stride=stride, bias=False),
                     norm_layer(planes * block.expansion, track_running_stats=self.track_running))
@@ -150,12 +148,12 @@ class reResnet(nn.Module):
                     norm_layer(planes * block.expansion, num_domain=self.num_bn, track_running_stats=self.track_running, dim=1, batch_size=self.batch_size))
 
         layers = []
-        layers.append(block(self.inplanes, planes, kernel_size, self.f_res, stride, downsample, 
+        layers.append(block(self.inplanes, planes, kernel_size, stride, downsample, 
                             norm_layer, self.num_bn, self.track_running, self.batch_size))
         
         self.inplanes = planes * block.expansion
         for _ in range(1, blocks):
-            layers.append(block(self.inplanes, planes, kernel_size, self.f_res, norm_layer=norm_layer, 
+            layers.append(block(self.inplanes, planes, kernel_size, norm_layer=norm_layer, 
                                 num_domain=self.num_bn, track_running=self.track_running, batch_size=self.batch_size))
             
         return self.Sequential(*layers)
@@ -164,7 +162,7 @@ class reResnet(nn.Module):
         
         if domain==None: domain=torch.zeros(x.shape[0]).to(torch.int32)
         
-        if self.norm_type=="bn" or self.norm_type=="in" or self.norm_type=="ibn":
+        if self.norm_type=="bn":
             output, target_y = self.forward_bn(x, target_y)
         else:
             output, target_y = self.forward_multibn(x, target_y, domain)

@@ -40,7 +40,7 @@ class DriverDrowsiness():
         print("Total Alert:Drowsy =",alert_num,":",drowsy_num)
         
         with open(args['total_path'] + '/info.txt', 'a') as f:
-            f.write(f"Dataset Name {args['dataset_name']}, Alert:Drowsy = {alert_num}:{drowsy_num}\n")
+            f.write(f"Alert:Drowsy = {alert_num}:{drowsy_num}\n")
 
     def __getitem__(self, index):
         return self.datasets[index] # one subject at a time

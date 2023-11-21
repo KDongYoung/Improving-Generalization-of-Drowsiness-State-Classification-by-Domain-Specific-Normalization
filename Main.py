@@ -55,7 +55,7 @@ def Experiment(args, subject_id, subjectList):
     return valid_best, t_loss, t_acc, t_bacc, t_f1, t_preci, t_rocauc, t_recall, t_timecost
 
 def start_Training(args, subjectList, subject_id, seed): # train
-    flatten_subjectList=sum(subjectList,[])
+    flatten_subjectList=subjectList
     num_domain=len(flatten_subjectList)-1 # train subject
     
     # MODEL
@@ -100,21 +100,9 @@ def start_Inference(args, subjectList, subject_id, seed): # prediction
     return t_loss, t_acc, t_bacc, t_f1, t_preci, t_rocauc, t_recall, t_timecost
     
 def load_model(args, num_domain): # load model
-    if args['model_name']=="eegnet4":
-        from Networks.Model_EEGNet import eegnet_4
-        model=eegnet_4(args, num_domain)
-    elif args['model_name']=="eegnet8":
-        from Networks.Model_EEGNet import eegnet_8
-        model=eegnet_8(args, num_domain)
-    elif args['model_name']=="deepconvnet":
-        from Networks.Model_DeepConvNet import DeepConvNet
-        model=DeepConvNet(args, num_domain)
-    elif args['model_name']=="reresnet8":
-        from Networks.Model_ResNet1DRe import resnet_8
+    if args['model_name']=="MoResnet8":
+        from Networks.Model_MoResNet1D import resnet_8
         model=resnet_8(args, num_domain)
-    elif args['model_name']=="reresnet18":
-        from Networks.Model_ResNet1DRe import resnet_18
-        model=resnet_18(args, num_domain)     
     else:
         model=None
         print("Model not loaded.....")
@@ -134,39 +122,33 @@ def main(subjectList, args, model_name):
 
     # exp_type=f"{model_name}_{args['loss']}_{args['norm_type']}"
     
-    if args['logit']=="":
-        exp_type=f"{model_name}_{args['loss']}_{args['norm_type']}_{args['f_res']}" 
-    else:    
-        exp_type=f"{model_name}_{args['loss']}_{args['norm_type']}_{args['logit']}_{args['f_res']}"
+    exp_type=f"{model_name}_{args['norm_type']}_{args['logit']}"
 
     args['result_dir']=exp_type
-    result_path = args['save_root'] + args['dataset_name'] +"_" + str(args['seed']) + "_" + str(args['steps'])  + "/Results"
+    result_path = args['save_root'] + str(args['seed']) + "_" + str(args['steps'])  + "/Results"
         
     if not os.path.isdir(result_path):
         for metric in args['eval_metric']:
             os.makedirs(f"{result_path}/{metric}")
         
-    before_sbj_num=0
-    for i in range(args['subject_group']):
-        before_sbj_num+=len(subjectList[i])
     
-    for id in range(len(subjectList[args['subject_group']])):
-        print(str(args['dataset_name']) + " / " + str(args['seed']) +  " / " + exp_type)   
-        print("~"*25 + ' Test Subject ' + subjectList[args['subject_group']][id] + " " + "~"*25)
+    for id in range(len(subjectList)):
+        print(str(args['seed']) +  " / " + exp_type)   
+        print("~"*25 + ' Test Subject ' + subjectList[id] + " " + "~"*25)
 
-        valid_best, loss, acc, bacc, f1, preci, auc, recall, time_cost = Experiment(args, before_sbj_num+id, subjectList)
+        valid_best, loss, acc, bacc, f1, preci, auc, recall, time_cost = Experiment(args, id, subjectList)
 
         if args["mode"]=="train":
             valid_best=[valid_best[args["metric_dict"][i]] for i in args["eval_metric"]]
       
-        total_perf = np.array([[subjectList[args['subject_group']][id]]*len(args['eval_metric']), valid_best, loss, acc, bacc, f1, preci, recall, auc, time_cost])
+        total_perf = np.array([[subjectList[id]]*len(args['eval_metric']), valid_best, loss, acc, bacc, f1, preci, recall, auc, time_cost])
       
         print("> "*20)
         # save the performance result into '.txt' file
         for metric_i, metric_name in enumerate(args['eval_metric']):
-            print(f"{metric_name} Valid: {valid_best[metric_i]:.2f}, TEST_SUBJECT: {subjectList[args['subject_group']][id]}, ACCURACY: {acc[metric_i]:.4f}%, PRECISION: {preci[metric_i]:.4f}%, RECALL: {recall[metric_i]:.4f}%")
+            print(f"{metric_name} Valid: {valid_best[metric_i]:.2f}, TEST_SUBJECT: {subjectList[id]}, ACCURACY: {acc[metric_i]:.4f}%, PRECISION: {preci[metric_i]:.4f}%, RECALL: {recall[metric_i]:.4f}%")
             with open(result_path+"/"+metric_name+"/"+metric_name+"_"+str(args['seed'])+"_"+exp_type+'_Accuracy.txt', 'a') as f:
-                f.write(f"valid_best: {valid_best[metric_i]:.2f}, {subjectList[args['subject_group']][id]}, acc: {acc[metric_i]:.4f}, bacc: {bacc[metric_i]:.4f}, f1: {f1[metric_i]:.4f}, precision: {preci[metric_i]:.4f}, recall: {recall[metric_i]:.4f}\n") # save test performance   
+                f.write(f"valid_best: {valid_best[metric_i]:.2f}, {subjectList[id]}, acc: {acc[metric_i]:.4f}, bacc: {bacc[metric_i]:.4f}, f1: {f1[metric_i]:.4f}, precision: {preci[metric_i]:.4f}, recall: {recall[metric_i]:.4f}\n") # save test performance   
         
         # save the performance result into '.csv' file
         df=pd.DataFrame(total_perf)
