@@ -5,7 +5,7 @@ import os
 """ Experiment Setting """ 
 # ARGUMENT
 parser = argparse.ArgumentParser(description='Calibration-free driver drowsiness classification')
-parser.add_argument('--data_root', default='./DATASET_DIR/B', help="name of the data folder") # DATASET_DIR/
+parser.add_argument('--data_root', default='/DATASET_DIR/', help="name of the data folder") # DATASET_DIR/
 parser.add_argument('--run_code_folder', default='')
 parser.add_argument('--save_root', default='./MODEL_SAVE_DIR/', help="where to save the models and tensorboard records") # MODEL_SAVE_DIR
 parser.add_argument('--result_dir', default="", help="save folder name") 
