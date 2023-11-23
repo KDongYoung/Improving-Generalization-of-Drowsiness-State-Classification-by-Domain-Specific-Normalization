@@ -2,7 +2,12 @@ import torch
 import torch.nn as nn
 
 '''
-Multi BN
+Domain-specific Batch Normalization in multi-domain setting
+
+Reference:
+    W.=G. Chang, T. You, S. Seo, S. Kwak, and B. Han
+    Domain-specific batch normalization for unsupervised domain adaptation, CVPR 2019.
+
 ''' 
 class MultiBN(nn.Module):
 

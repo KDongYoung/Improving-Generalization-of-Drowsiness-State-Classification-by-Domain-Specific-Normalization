@@ -1,13 +1,13 @@
 import torch
 import numpy as np
-import Data_Load.DriverDrowsinessDataset_3sec_B as DriverDrowsinessDataset_3sec_B
+from Data_Load.DriverDrowsinessDataset_3sec import DriverDrowsiness
 import torch
 from collections import Counter
     
 def init_dataset(args, subj_idx, SUBJECT_LIST, seed):
     test_envs = np.r_[subj_idx].tolist() 
 
-    dataset = DriverDrowsinessDataset_3sec_B.DriverDrowsiness(args, args['data_root'], SUBJECT_LIST, test_envs[0]) # sbj의 데이터 불러오기
+    dataset = DriverDrowsiness(args, args['data_root'], SUBJECT_LIST, test_envs[0]) # sbj의 데이터 불러오기
 
     ############################################################### for Trainning: Train, Valid, Test loader
     if args['mode'] == "train": 

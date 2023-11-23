@@ -80,7 +80,7 @@ ${MODEL_SAVE_DIR}
 | Model                      | Accuracy | F1-score | Precision | Recall | AUROC | 
 | -------------------------- | -------- | -------- | --------- | ------ | ----- |  
 | Baseline                   |  72.93  |  69.09  |  72.28  |  72.97  |  72.74   | 
-| Baseline + domain-specific normalization (ours)   |  73.27  |  69.63  |  71.98  |  74.17  | 74.02 | 
+| Baseline + Domain-specific normalization (ours)   |  73.27  |  69.63  |  71.98  |  74.17  | 74.02 | 
 
 
 ## Citation
