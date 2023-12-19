@@ -1,5 +1,5 @@
 # Improving-Generalization-of-Drowsiness-State-Classification-by-Domain-Specific-Normalization
-This is an official repo for Improving Generalization of Drowsiness State Classification by Domain-Specific Normalization (Proc. Int. Winter Conf. Brain-Computer Interface, 2024) [\[Paper\]]()
+This is an official repo for Improving Generalization of Drowsiness State Classification by Domain-Specific Normalization (Proc. Int. Winter Conf. Brain-Computer Interface, 2024) [\[Paper\]](https://arxiv.org/abs/2312.09461)
 
 ## Description
 
