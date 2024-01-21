@@ -80,9 +80,6 @@ jsonschema==4.4.0
 jupyter-client==7.2.2
 jupyter-core==4.9.2
 jupyter-tensorboard @ git+https://github.com/cliffwoolley/jupyter_tensorboard.git@ffa7e26138b82549453306e06b535a9ac36db17a
-jupyterlab==2.3.2
-jupyterlab-pygments==0.2.2
-jupyterlab-server==1.2.0
 jupytext==1.13.8
 kiwisolver==1.4.2
 langcodes @ file:///home/conda/feedstock_root/build_artifacts/langcodes_1636741340529/work
