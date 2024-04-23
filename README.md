@@ -86,7 +86,14 @@ ${MODEL_SAVE_DIR}
 ## Citation
 
 ```
-ss
+@inproceedings{kim2024improving,
+  title={Improving Generalization of Drowsiness State Classification by Domain-Specific Normalization},
+  author={Kim, Dong-Young and Han, Dong-Kyun and Park, Seo-Hyeon and Jang, Geun-Deok},
+  booktitle={2024 12th International Winter Conference on Brain-Computer Interface (BCI)},
+  pages={1--5},
+  year={2024},
+  organization={IEEE}
+}
 ```
 
 --------------
